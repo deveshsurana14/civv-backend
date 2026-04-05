@@ -198,12 +198,7 @@ app.get("/api/orders", verifyAdmin, async (req, res) => {
 /* ================= FRONTEND SERVE ===================== */
 /* ===================================================== */
 
-app.use(express.static(path.join(__dirname, "../civv-frontend")));
 
-/* ---------- FALLBACK ---------- */
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "../civv-frontend/index.html"));
-});
 
 /* ---------- SERVER ---------- */
 app.listen(process.env.PORT || 5000, () => {
