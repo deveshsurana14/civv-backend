@@ -16,8 +16,8 @@ app.use(express.json());
 
 /* ---------- MONGODB ---------- */
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 /* ---------- MODELS ---------- */
 const Order = mongoose.model("Order", new mongoose.Schema({
@@ -44,11 +44,19 @@ const razorpay = new Razorpay({
 });
 
 /* ===================================================== */
-/* ================== API ROUTES FIRST ================== */
+/* ===================== TEST ROUTE ===================== */
+/* ===================================================== */
+
+app.get("/api", (req, res) => {
+  res.send("API is working 🚀");
+});
+
+/* ===================================================== */
+/* ===================== API ROUTES ===================== */
 /* ===================================================== */
 
 /* ---------- GET STOCK ---------- */
-app.get("/stock", async (req, res) => {
+app.get("/api/stock", async (req, res) => {
   try {
     const stock = await Stock.find();
     res.json(stock);
@@ -58,7 +66,7 @@ app.get("/stock", async (req, res) => {
 });
 
 /* ---------- CREATE ORDER ---------- */
-app.post("/create-order", async (req, res) => {
+app.post("/api/create-order", async (req, res) => {
   try {
     const { amount } = req.body;
 
@@ -77,7 +85,7 @@ app.post("/create-order", async (req, res) => {
 });
 
 /* ---------- VERIFY PAYMENT + STOCK ---------- */
-app.post("/verify-payment", async (req, res) => {
+app.post("/api/verify-payment", async (req, res) => {
   try {
     const {
       razorpay_order_id,
@@ -141,7 +149,7 @@ app.post("/verify-payment", async (req, res) => {
 });
 
 /* ---------- ADMIN LOGIN ---------- */
-app.post("/admin-login", (req, res) => {
+app.post("/api/admin-login", (req, res) => {
   const { username, password } = req.body;
 
   if (
@@ -177,7 +185,7 @@ function verifyAdmin(req, res, next) {
 }
 
 /* ---------- GET ORDERS ---------- */
-app.get("/orders", verifyAdmin, async (req, res) => {
+app.get("/api/orders", verifyAdmin, async (req, res) => {
   try {
     const orders = await Order.find().sort({ date: -1 });
     res.json(orders);
@@ -187,7 +195,7 @@ app.get("/orders", verifyAdmin, async (req, res) => {
 });
 
 /* ===================================================== */
-/* ================== FRONTEND SERVE ==================== */
+/* ================= FRONTEND SERVE ===================== */
 /* ===================================================== */
 
 app.use(express.static(path.join(__dirname, "../civv-frontend")));
@@ -199,5 +207,5 @@ app.use((req, res) => {
 
 /* ---------- SERVER ---------- */
 app.listen(process.env.PORT || 5000, () => {
-  console.log("Server running on port 5000");
+  console.log("Server running 🚀");
 });
